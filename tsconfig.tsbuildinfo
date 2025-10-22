@@ -1,0 +1,1 @@
+{"root":["./src/bootstrap.ts","./src/index.ts","./src/db/config/connectdb.ts","./src/modules/routes.ts","./src/modules/authmodule/authcontroller.ts","./src/modules/authmodule/authmiddelware.ts","./src/modules/authmodule/authservices/signupservice.ts","./src/modules/postmodule/postcontroller.ts","./src/modules/postmodule/postmiddelware.ts"],"errors":true,"version":"5.9.3"}
