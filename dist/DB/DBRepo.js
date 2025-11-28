@@ -25,5 +25,28 @@ class DBRepo {
         });
         return doc;
     };
+    insertMany = async ({ docs }) => {
+        const CreatedDocs = await this.model.insertMany(docs);
+        return CreatedDocs;
+    };
+    findOneAndDelete = async ({ filter, options = {}, }) => {
+        const doc = await this.model.findOneAndDelete(filter, options);
+        return doc;
+    };
+    findOneAndUpdate = async ({ filter, update, options = {}, }) => {
+        const doc = await this.model.findOneAndUpdate(filter, update, {
+            ...options,
+            new: true,
+        });
+        return doc;
+    };
+    findByIdAndDelete = async ({ id, options = {}, }) => {
+        const doc = await this.model.findByIdAndDelete(id, options);
+        return doc;
+    };
+    findByIdAndUpdate = async ({ id, update, options = {}, }) => {
+        const doc = await this.model.findByIdAndUpdate(id, update, options);
+        return doc;
+    };
 }
 exports.DBRepo = DBRepo;

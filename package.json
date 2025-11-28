@@ -10,14 +10,32 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.931.0",
     "bcrypt": "^6.0.0",
     "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
+    "express-graphql": "^0.12.0",
+    "express-rate-limit": "^8.2.1",
+    "graphql": "^15.3.0",
+    "graphql-http": "^1.22.4",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.1",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "nanoid": "^5.1.6",
+    "nodemailer": "^7.0.9",
+    "ping": "^1.0.0",
+    "socket.io": "^4.8.1",
     "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
-    "@types/express": "^5.0.3"
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/multer": "^2.0.0",
+    "@types/nodemailer": "^7.0.2"
   }
 }

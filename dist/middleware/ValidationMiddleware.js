@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GraphQlValidation = void 0;
+const graphql_1 = require("graphql");
 const validation = (schema) => {
     return async (req, res, next) => {
         const data = {
@@ -16,4 +18,13 @@ const validation = (schema) => {
         next();
     };
 };
+const GraphQlValidation = (schema, args) => {
+    return async (req, res, next) => {
+        const validationRes = await schema.safeParseAsync(args);
+        if (!validationRes.success) {
+            throw new graphql_1.GraphQLError('validation error');
+        }
+    };
+};
+exports.GraphQlValidation = GraphQlValidation;
 exports.default = validation;

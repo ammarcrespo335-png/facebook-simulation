@@ -1,4 +1,5 @@
 import {Request,Response, NextFunction } from "express";
+import { GraphQLError } from "graphql";
 import { ZodObject } from "zod";
 
 const validation = (schema: ZodObject) => {
@@ -16,5 +17,17 @@ const validation = (schema: ZodObject) => {
         }
         next()
     }
+}
+
+
+export const GraphQlValidation = (schema: ZodObject , args:any) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    
+    const validationRes = await schema.safeParseAsync(args)
+    if (!validationRes.success) {
+     throw new GraphQLError('validation error')
+    }
+  
+  }
 }
 export default validation
