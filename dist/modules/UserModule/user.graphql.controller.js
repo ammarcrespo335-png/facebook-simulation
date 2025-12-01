@@ -13,15 +13,13 @@ exports.UserQuery = {
         resolve: user_graphql_services_1.hello,
     },
     me: {
-        type: new graphql_1.GraphQLList(UserTypes_1.QIUser),
+        type: UserTypes_1.QIUser,
         resolve: user_graphql_services_1.me,
     },
 };
 exports.UserMutation = {
     hello: {
         type: graphql_1.GraphQLString,
-        resolve: () => {
-            return 'hello';
-        },
+        resolve: () => 'hello',
     },
 };

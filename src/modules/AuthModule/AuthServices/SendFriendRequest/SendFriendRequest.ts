@@ -6,7 +6,7 @@ import {
   NotFoundExceptions,
 } from '../../../../utils/errors/ErrorTypes'
 import { FriendRequestModel } from '../../../../DB/models/FriendRequestModel'
-import { UserRepo } from '../../../../DB/repositories/DBRepository'
+import { UserRepo } from '../../../../DB/repositories/UserRepository'
 
 export class SendFriendRequest {
   private FriendModel = FriendRequestModel

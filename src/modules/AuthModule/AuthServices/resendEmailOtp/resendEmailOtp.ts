@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from 'express'
-import { UserRepo } from '../../../../DB/repositories/DBRepository'
+import { UserRepo } from '../../../../DB/repositories/UserRepository'
 import { SuccessHandler } from '../../../../utils/SuccessHandler'
 import { resendEmailOtpDto } from '../AuthCore/AuthDto'
 import {

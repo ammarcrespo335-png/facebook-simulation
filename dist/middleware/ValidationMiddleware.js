@@ -18,13 +18,15 @@ const validation = (schema) => {
         next();
     };
 };
-const GraphQlValidation = (schema, args) => {
-    return async (req, res, next) => {
-        const validationRes = await schema.safeParseAsync(args);
-        if (!validationRes.success) {
-            throw new graphql_1.GraphQLError('validation error');
-        }
-    };
+const GraphQlValidation = async (schema, args) => {
+    const validationRes = await schema.safeParseAsync(args);
+    if (!validationRes.success) {
+        const error = new graphql_1.GraphQLError('validation error');
+        error.extensions = {
+            errors: validationRes.error.format(),
+        };
+        throw error;
+    }
 };
 exports.GraphQlValidation = GraphQlValidation;
 exports.default = validation;

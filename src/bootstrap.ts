@@ -10,8 +10,9 @@ import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 import { schema } from './modules/graphQl/main.graphQl'
 
-import { createHandler } from 'graphql-http'
-import { AuthRequest, GraphQlAuth } from './middleware/authMiddleware'
+import { graphqlHTTP } from 'express-graphql'
+import { PostRouter } from './modules/PostModule/PostController'
+import { CommentRouter } from './modules/Comment Module/CommentController'
 const app = express()
 export const bootstrap = async () => {
   const port = process.env.PORT || 5500
@@ -19,34 +20,29 @@ export const bootstrap = async () => {
   app.use(cors())
   app.use(helmet())
   app.use(morgan('dev'))
-  app.use(
-    '/api/v1/auth',
-    rateLimit({
-      windowMs: 1 * 60 * 1000,
-      max: 5,
-      message: 'Too many login attempts, please try again later.',
-    }),
-    authRouter
-  )
-  app.use(
-    '/api/v1/chat',
-    rateLimit({
-      windowMs: 1 * 60 * 1000,
-      max: 20,
-      message: 'Too many requests from this IP, try again later',
-    })
-  )
 
-  app.use('/api/v1', router)
-  app.all(
-    '/GraphQl',
-    GraphQlAuth,
-    createHandler({
-      schema,
-      context: req => ({
-        authorization: (req.raw as AuthRequest).user,
-      }),
+  const createRateLimiter = (maxRequests: number) =>
+    rateLimit({
+      windowMs: 60 * 1000,
+      max: maxRequests,
+      standardHeaders: true,
+      legacyHeaders: false,
+      message: 'Too many requests, please try again later.',
     })
+
+  app.use('/api/v1/auth', createRateLimiter(5), authRouter)
+  app.use('/api/v1/post', createRateLimiter(5), PostRouter)
+  app.use('/api/v1/comment', createRateLimiter(5), CommentRouter)
+  app.use('/api/v1/chat', createRateLimiter(20))
+  app.use('/api/v1', router)
+  app.use(
+    '/api/v1/graphql',
+    createRateLimiter(5),
+    graphqlHTTP(req => ({
+      schema,
+      graphiql: true,
+      context: { authorization: req.headers.authorization || null },
+    }))
   )
 
   await DBconnection()

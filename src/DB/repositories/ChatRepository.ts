@@ -1,5 +1,5 @@
 import { Model } from 'mongoose'
-import { DBRepo } from './UserRepository'
+import { DBRepo } from './DBRepository'
 
 import { ChatModel, IChat } from '../models/ChatModel'
 

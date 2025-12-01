@@ -1,5 +1,11 @@
+// index.ts
+import express from 'express'
 import { bootstrap } from './bootstrap'
-import authRouter from './modules/AuthModule/AuthController'
 import router from './modules/Routes'
-router.use('/api/v1/auth', authRouter)
+
+const app = express()
+
+app.use(express.json())
+app.use('/api/v1', router) 
+
 bootstrap()

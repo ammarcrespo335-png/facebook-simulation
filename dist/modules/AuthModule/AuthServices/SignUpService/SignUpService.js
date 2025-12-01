@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignUpService = void 0;
 const ErrorTypes_1 = require("../../../../utils/errors/ErrorTypes");
-const DBRepository_1 = require("../../../../DB/repositories/DBRepository");
+const UserRepository_1 = require("../../../../DB/repositories/UserRepository");
 const Hash_1 = require("../../../../utils/Security/Hash");
 const SuccessHandler_1 = require("../../../../utils/SuccessHandler");
 const GenerateHtml_1 = require("../../../../utils/Email/GenerateHtml");
 const CreateOtp_1 = require("../../../../utils/Email/CreateOtp");
 const EmailEvents_1 = require("../../../../utils/Email/EmailEvents");
 class SignUpService {
-    userRepo = new DBRepository_1.UserRepo();
+    userRepo = new UserRepository_1.UserRepo();
     signUp = async (req, res, next) => {
         const { F_NAME, L_NAME, Age, email, password, Phone } = req.body;
         const IsEmailExist = await this.userRepo.findByEmail({ email });

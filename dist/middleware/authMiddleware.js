@@ -1,15 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.auth = exports.GraphQlAuth = exports.decodeToken = exports.tokenTypesEnum = void 0;
+exports.PostAuth = exports.auth = exports.GraphQlAuth = exports.decodeToken = exports.tokenTypesEnum = void 0;
 const ErrorTypes_1 = require("../utils/errors/ErrorTypes");
 const token_1 = require("../utils/Security/token");
-const DBRepository_1 = require("../DB/repositories/DBRepository");
+const UserRepository_1 = require("../DB/repositories/UserRepository");
+const graphql_1 = require("graphql");
+const PostModels_1 = require("../DB/models/PostModels");
 var tokenTypesEnum;
 (function (tokenTypesEnum) {
     tokenTypesEnum["ACCESS_SIGNATURE"] = "access";
     tokenTypesEnum["REFRESH_SIGNATURE"] = "refresh";
 })(tokenTypesEnum || (exports.tokenTypesEnum = tokenTypesEnum = {}));
-const UserModel = new DBRepository_1.UserRepo();
+const UserModel = new UserRepository_1.UserRepo();
 const decodeToken = async ({ authorization, tokenTypes = tokenTypesEnum.ACCESS_SIGNATURE, }) => {
     if (!authorization) {
         throw new ErrorTypes_1.invalidTokenExceptions('Token not provided');
@@ -44,17 +46,23 @@ const decodeToken = async ({ authorization, tokenTypes = tokenTypesEnum.ACCESS_S
 };
 exports.decodeToken = decodeToken;
 const GraphQlAuth = async (authorization) => {
-    if (!authorization || typeof authorization !== 'string')
-        return null;
+    if (!authorization) {
+        throw new graphql_1.GraphQLError('No authorization token provided', {
+            extensions: { code: 'UNAUTHORIZED' },
+        });
+    }
     try {
         const data = await (0, exports.decodeToken)({
-            authorization: authorization,
+            authorization,
             tokenTypes: tokenTypesEnum.ACCESS_SIGNATURE,
         });
         return data;
     }
     catch (err) {
-        console.log({ err });
+        console.log('Auth Error:', err);
+        throw new graphql_1.GraphQLError('Authentication failed', {
+            extensions: { code: 'UNAUTHORIZED' },
+        });
     }
 };
 exports.GraphQlAuth = GraphQlAuth;
@@ -74,3 +82,21 @@ const auth = async (req, res, next) => {
     }
 };
 exports.auth = auth;
+const PostAuth = async (req, res, next) => {
+    const postId = req.params.postId || req.body.postId;
+    if (!postId) {
+        throw new ErrorTypes_1.NotFoundExceptions('Post ID is required');
+    }
+    const post = await PostModels_1.PostModel.findById(postId);
+    if (!post) {
+        throw new ErrorTypes_1.NotFoundExceptions('post not found');
+    }
+    if (post.isFrozen) {
+        throw new ErrorTypes_1.ForbiddenException('This post is frozen and cannot be modified');
+    }
+    if (post.CreatedBy.toString() !== req.user?._id.toString()) {
+        throw new ErrorTypes_1.ForbiddenException('You are not allowed to modify this post');
+    }
+    next();
+};
+exports.PostAuth = PostAuth;

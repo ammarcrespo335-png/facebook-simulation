@@ -14,8 +14,9 @@ const AuthController_1 = __importDefault(require("./modules/AuthModule/AuthContr
 const helmet_1 = __importDefault(require("helmet"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const main_graphQl_1 = require("./modules/graphQl/main.graphQl");
-const graphql_http_1 = require("graphql-http");
-const authMiddleware_1 = require("./middleware/authMiddleware");
+const express_graphql_1 = require("express-graphql");
+const PostController_1 = require("./modules/PostModule/PostController");
+const CommentController_1 = require("./modules/Comment Module/CommentController");
 const app = (0, express_1.default)();
 const bootstrap = async () => {
     const port = process.env.PORT || 5500;
@@ -23,23 +24,23 @@ const bootstrap = async () => {
     app.use((0, cors_1.default)());
     app.use((0, helmet_1.default)());
     app.use((0, morgan_1.default)('dev'));
-    app.use('/api/v1/auth', (0, express_rate_limit_1.default)({
-        windowMs: 1 * 60 * 1000,
-        max: 5,
-        message: 'Too many login attempts, please try again later.',
-    }), AuthController_1.default);
-    app.use('/api/v1/chat', (0, express_rate_limit_1.default)({
-        windowMs: 1 * 60 * 1000,
-        max: 20,
-        message: 'Too many requests from this IP, try again later',
-    }));
+    const createRateLimiter = (maxRequests) => (0, express_rate_limit_1.default)({
+        windowMs: 60 * 1000,
+        max: maxRequests,
+        standardHeaders: true,
+        legacyHeaders: false,
+        message: 'Too many requests, please try again later.',
+    });
+    app.use('/api/v1/auth', createRateLimiter(5), AuthController_1.default);
+    app.use('/api/v1/post', createRateLimiter(5), PostController_1.PostRouter);
+    app.use('/api/v1/comment', createRateLimiter(5), CommentController_1.CommentRouter);
+    app.use('/api/v1/chat', createRateLimiter(20));
     app.use('/api/v1', Routes_1.default);
-    app.all('/GraphQl', authMiddleware_1.GraphQlAuth, (0, graphql_http_1.createHandler)({
+    app.use('/api/v1/graphql', createRateLimiter(5), (0, express_graphql_1.graphqlHTTP)(req => ({
         schema: main_graphQl_1.schema,
-        context: req => ({
-            authorization: req.raw.user,
-        }),
-    }));
+        graphiql: true,
+        context: { authorization: req.headers.authorization || null },
+    })));
     await (0, connectDB_1.DBconnection)();
     app.use((req, res, next) => {
         next({ statusCode: 404, message: 'Route Not Found' });

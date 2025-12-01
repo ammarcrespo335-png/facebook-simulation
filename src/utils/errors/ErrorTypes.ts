@@ -47,3 +47,8 @@ export class NotVerifiedExceptions extends CAppError {
     super('not verified', 400)
   }
 }
+export class ForbiddenException extends CAppError {
+  constructor(msg: string) {
+    super('not verified', 404)
+  }
+}

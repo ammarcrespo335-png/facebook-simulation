@@ -2,6 +2,7 @@ import { resendEmailOtpSchema } from './AuthServices/resendEmailOtp/resendEmailV
 import { refreshTokenService } from './AuthServices/refreshToken/refreshToken'
 import { ConfirmEmailSchema } from './AuthServices/ConfirmEmailService/ConfirmEmailValidation'
 import { ConfirmEmail } from './AuthServices/ConfirmEmailService/ConfirmEmail'
+
 import { Router } from 'express'
 import { SignUpSchema } from './AuthServices/SignUpService/SignUpValidation'
 import validation from '../../middleware/ValidationMiddleware'
@@ -15,80 +16,102 @@ import { auth } from '../../middleware/authMiddleware'
 
 import { ForgetPassService } from './AuthServices/forgetPasswordService/ForgetPassService'
 import { resetForgetPasswordService } from './AuthServices/resetForgetPasswordService/resetForgetPass'
+
 import { multerFile, StoreInEnum } from '../../utils/multer/multer'
 import { ImagesController } from './AuthServices/Upload/Images'
 import { SendFriendRequest } from './AuthServices/SendFriendRequest/SendFriendRequest'
+
 import chatRouter from '../chatModule/ChatController'
 
 const authRouter = Router()
+
+// Chat routes
 authRouter.use('/:id/chat', chatRouter)
+
+// Services Instances
 const signUpService = new SignUpService()
+const confirmEmailService = new ConfirmEmail()
+const resendEmailOtpService = new resendOtpService()
+const login = new loginService()
+const getUser = new GetUserService()
+const refreshToken = new refreshTokenService()
+const forgetPassword = new ForgetPassService()
+const resetPassword = new resetForgetPasswordService()
+const friendRequestService = new SendFriendRequest()
+const imagesController = new ImagesController()
+
+// Signup
 authRouter.post(
   '/signup',
   validation(SignUpSchema),
   signUpService.signUp.bind(signUpService)
 )
 
-const ConfirmEmailService = new ConfirmEmail()
+// Confirm Email
 authRouter.patch(
-  '/confirmEmail',
+  '/confirm-email',
   validation(ConfirmEmailSchema),
-  ConfirmEmailService.ConfirmEmail.bind(ConfirmEmailService)
+  confirmEmailService.ConfirmEmail.bind(confirmEmailService)
 )
 
-const resendEmailOtpService = new resendOtpService()
+// Resend OTP
 authRouter.patch(
-  '/resendOtp',
+  '/resend-otp',
   validation(resendEmailOtpSchema),
   resendEmailOtpService.resendEmailOtp.bind(resendEmailOtpService)
 )
-const login = new loginService()
+
+// Login
 authRouter.post(
   '/login',
   validation(loginSchema),
   login.loginService.bind(login)
 )
-const getUser = new GetUserService()
+
+// Get profile
 authRouter.get('/me', auth, getUser.getUserProfile.bind(getUser))
 
-const refreshToken = new refreshTokenService()
-authRouter.post('/refreshToken', refreshToken.refreshToken.bind(refreshToken))
+// Refresh token
+authRouter.post('/refresh-token', refreshToken.refreshToken.bind(refreshToken))
 
-const ForgetPassword = new ForgetPassService()
+// Forget password
 authRouter.patch(
-  '/forgetPassword',
-  ForgetPassword.ForgetPass.bind(ForgetPassword)
-)
-const Reset_Password = new resetForgetPasswordService()
-authRouter.patch(
-  '/reset_forget_Pass',
-  Reset_Password.resetForgetPassword.bind(Reset_Password)
+  '/forget-password',
+  forgetPassword.ForgetPass.bind(forgetPassword)
 )
 
-const ResendFriendRequest = new SendFriendRequest()
+// Reset forget password
+authRouter.patch(
+  '/reset-password',
+  resetPassword.resetForgetPassword.bind(resetPassword)
+)
+
+// Friend requests
 authRouter.patch(
   '/send-friend-request',
   auth,
-  ResendFriendRequest.FriendRequest.bind(ResendFriendRequest)
+  friendRequestService.FriendRequest.bind(friendRequestService)
 )
-const AcceptFriendRequest = new SendFriendRequest()
+
 authRouter.patch(
   '/accept-friend-request/:id',
   auth,
-  AcceptFriendRequest.AcceptFriendRequest.bind(AcceptFriendRequest)
+  friendRequestService.AcceptFriendRequest.bind(friendRequestService)
 )
 
-const imagesController = new ImagesController()
+// Upload profile image
 authRouter.patch(
-  '/Profile-Image',
-  multerFile({ storeIn: StoreInEnum.memory }).single('image'),
+  '/profile-image',
   auth,
+  multerFile({ storeIn: StoreInEnum.memory }).single('image'),
   imagesController.uploadProfileImage
 )
+
+// Upload cover images
 authRouter.patch(
-  '/cover-Image',
-  multerFile({ storeIn: StoreInEnum.memory }).array('images'),
+  '/cover-images',
   auth,
+  multerFile({ storeIn: StoreInEnum.memory }).array('images'),
   imagesController.uploadCoverImage
 )
 

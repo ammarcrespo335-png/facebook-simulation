@@ -4,10 +4,10 @@ exports.SendFriendRequest = void 0;
 const SuccessHandler_1 = require("../../../../utils/SuccessHandler");
 const ErrorTypes_1 = require("../../../../utils/errors/ErrorTypes");
 const FriendRequestModel_1 = require("../../../../DB/models/FriendRequestModel");
-const DBRepository_1 = require("../../../../DB/repositories/DBRepository");
+const UserRepository_1 = require("../../../../DB/repositories/UserRepository");
 class SendFriendRequest {
     FriendModel = FriendRequestModel_1.FriendRequestModel;
-    UserModel = new DBRepository_1.UserRepo();
+    UserModel = new UserRepository_1.UserRepo();
     FriendRequest = async (req, res, next) => {
         const authUser = res.locals.user;
         const from = authUser._id;

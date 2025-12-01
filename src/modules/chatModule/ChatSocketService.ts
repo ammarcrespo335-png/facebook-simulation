@@ -1,5 +1,5 @@
 import { HChatDocument } from './../../DB/models/ChatModel'
-import { UserRepo } from '../../DB/repositories/DBRepository'
+import { UserRepo } from '../../DB/repositories/UserRepository'
 import { AuthSocketData, ConnectedSockets } from '../gateway/gateway'
 import { ChatRepo } from '../../DB/repositories/ChatRepository'
 import { NotFoundExceptions } from '../../utils/errors/ErrorTypes'
@@ -115,7 +115,9 @@ export class ChatSocketService {
       })
       socket.emit('success message', content)
       socket.to(group.roomId).emit('new group message', {
-        content , from: user?._id , groupId
+        content,
+        from: user?._id,
+        groupId,
       })
     } catch (error) {
       socket.emit('error', {

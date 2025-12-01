@@ -2,19 +2,12 @@
 import mongoose, {
   Schema,
   model,
-  Document,
   Types,
   HydratedDocument,
-  Mongoose,
 } from 'mongoose'
+import { IMessage } from '../../modules/chatModule/ChatTypes'
 
-export interface IMessage {
-  createdBy: Types.ObjectId
-  content: string
-  chatId: Types.ObjectId
-  createdAt: Date
-  updatedAt: Date
-}
+
 const MessageSchema = new Schema<IMessage>(
   {
     createdBy: {

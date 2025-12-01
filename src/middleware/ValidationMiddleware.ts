@@ -2,7 +2,7 @@ import {Request,Response, NextFunction } from "express";
 import { GraphQLError } from "graphql";
 import { ZodObject } from "zod";
 
-const validation = (schema: ZodObject) => {
+const validation = (schema: ZodObject<any>) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const data = {
             ...req.body,
@@ -20,14 +20,18 @@ const validation = (schema: ZodObject) => {
 }
 
 
-export const GraphQlValidation = (schema: ZodObject , args:any) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    
-    const validationRes = await schema.safeParseAsync(args)
-    if (!validationRes.success) {
-     throw new GraphQLError('validation error')
+export const GraphQlValidation = async (schema: ZodObject<any>, args: any) => {
+  const validationRes = await schema.safeParseAsync(args)
+
+  if (!validationRes.success) {
+    const error = new GraphQLError('validation error')
+
+    ;(error as any).extensions = {
+      errors: validationRes.error.format(),
     }
-  
+
+    throw error
   }
 }
+
 export default validation

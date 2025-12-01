@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { SuccessHandler } from '../../../../utils/SuccessHandler'
-import { UserRepo } from '../../../../DB/repositories/DBRepository'
+import { UserRepo } from '../../../../DB/repositories/UserRepository'
 import {
   NotFoundExceptions,
   NotVerifiedExceptions,

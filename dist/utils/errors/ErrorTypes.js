@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NotVerifiedExceptions = exports.invalidTokenExceptions = exports.invalidCredentialsExceptions = exports.OtpExpiredExceptions = exports.invalidOtpExceptions = exports.invalidEmailExceptions = exports.NotFoundExceptions = exports.CAppError = void 0;
+exports.ForbiddenException = exports.NotVerifiedExceptions = exports.invalidTokenExceptions = exports.invalidCredentialsExceptions = exports.OtpExpiredExceptions = exports.invalidOtpExceptions = exports.invalidEmailExceptions = exports.NotFoundExceptions = exports.CAppError = void 0;
 class CAppError extends Error {
     statusCode;
     constructor(msg, statusCode, options = {}) {
@@ -51,3 +51,9 @@ class NotVerifiedExceptions extends CAppError {
     }
 }
 exports.NotVerifiedExceptions = NotVerifiedExceptions;
+class ForbiddenException extends CAppError {
+    constructor(msg) {
+        super('not verified', 404);
+    }
+}
+exports.ForbiddenException = ForbiddenException;

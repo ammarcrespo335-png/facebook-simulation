@@ -1,4 +1,10 @@
-import { GraphQLID, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql'
+import {
+  GraphQLID,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql'
 import { HydratedDocument, Schema, Types } from 'mongoose'
 
 export interface IUser {
@@ -32,13 +38,19 @@ export interface IUser {
   isVerified: boolean
 }
 export const QIUser = new GraphQLObjectType({
-  name: 'User Type',
-  fields: {
+  name: 'UserType',
+  fields: () => ({
     _id: { type: GraphQLID },
     F_NAME: { type: GraphQLString },
     L_NAME: { type: GraphQLString },
+    Phone: { type: GraphQLString },
     email: { type: GraphQLString },
-    age:{type:GraphQLInt}
-  },
+
+    Age: { type: GraphQLInt },
+    ProfileImage: { type: GraphQLString },
+    CoverImages: { type: new GraphQLList(GraphQLString) },
+    FolderID: { type: GraphQLString },
+    isVerified: { type: GraphQLString },
+  }),
 })
 export type HUserDocument = HydratedDocument<IUser>

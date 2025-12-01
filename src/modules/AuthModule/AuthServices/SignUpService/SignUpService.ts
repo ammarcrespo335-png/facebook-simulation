@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 import { SignUpDto } from '../AuthCore/AuthDto'
 import { CAppError } from '../../../../utils/errors/ErrorTypes'
-import { UserRepo } from '../../../../DB/repositories/DBRepository'
+import { UserRepo } from '../../../../DB/repositories/UserRepository'
 import { hash } from '../../../../utils/Security/Hash'
 import { SuccessHandler } from '../../../../utils/SuccessHandler'
 import { authTemplate } from '../../../../utils/Email/GenerateHtml'

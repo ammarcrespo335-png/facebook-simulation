@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatService = void 0;
 const ChatRepository_1 = require("../../DB/repositories/ChatRepository");
 const SuccessHandler_1 = require("../../utils/SuccessHandler");
-const DBRepository_1 = require("../../DB/repositories/DBRepository");
+const UserRepository_1 = require("../../DB/repositories/UserRepository");
 const ErrorTypes_1 = require("../../utils/errors/ErrorTypes");
 const nanoid_1 = require("nanoid");
 class ChatService {
     ChatModel = new ChatRepository_1.ChatRepo();
-    UserModel = new DBRepository_1.UserRepo();
+    UserModel = new UserRepository_1.UserRepo();
     getChat = async (req, res, next) => {
         try {
             const authUser = res.locals.user;

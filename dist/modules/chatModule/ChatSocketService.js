@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatSocketService = void 0;
-const DBRepository_1 = require("../../DB/repositories/DBRepository");
+const UserRepository_1 = require("../../DB/repositories/UserRepository");
 const gateway_1 = require("../gateway/gateway");
 const ChatRepository_1 = require("../../DB/repositories/ChatRepository");
 const ErrorTypes_1 = require("../../utils/errors/ErrorTypes");
 class ChatSocketService {
-    UserModel = new DBRepository_1.UserRepo();
+    UserModel = new UserRepository_1.UserRepo();
     ChatModel = new ChatRepository_1.ChatRepo();
     SendMessage = async (socket, data) => {
         const createdBy = socket.user._id;
@@ -93,7 +93,9 @@ class ChatSocketService {
             });
             socket.emit('success message', content);
             socket.to(group.roomId).emit('new group message', {
-                content, from: user?._id, groupId
+                content,
+                from: user?._id,
+                groupId,
             });
         }
         catch (error) {

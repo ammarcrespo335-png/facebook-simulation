@@ -1,8 +1,6 @@
-import { GraphQLList, GraphQLString } from 'graphql'
-import { UserType } from '../../utils/GraphQl/graphqlTypes'
+import { GraphQLString } from 'graphql'
 import { hello, me } from './user.graphql.services'
 import { QIUser } from './UserTypes'
-
 
 export const UserQuery = {
   hello: {
@@ -12,8 +10,9 @@ export const UserQuery = {
     },
     resolve: hello,
   },
+
   me: {
-    type: new GraphQLList(QIUser),
+    type: QIUser, 
     resolve: me,
   },
 }
@@ -21,8 +20,6 @@ export const UserQuery = {
 export const UserMutation = {
   hello: {
     type: GraphQLString,
-    resolve: () => {
-      return 'hello'
-    },
+    resolve: () => 'hello',
   },
 }

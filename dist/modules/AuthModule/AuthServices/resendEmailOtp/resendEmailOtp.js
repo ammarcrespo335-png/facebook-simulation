@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resendOtpService = void 0;
-const DBRepository_1 = require("../../../../DB/repositories/DBRepository");
+const UserRepository_1 = require("../../../../DB/repositories/UserRepository");
 const SuccessHandler_1 = require("../../../../utils/SuccessHandler");
 const ErrorTypes_1 = require("../../../../utils/errors/ErrorTypes");
 const CreateOtp_1 = require("../../../../utils/Email/CreateOtp");
@@ -9,7 +9,7 @@ const GenerateHtml_1 = require("../../../../utils/Email/GenerateHtml");
 const EmailEvents_1 = require("../../../../utils/Email/EmailEvents");
 const Hash_1 = require("../../../../utils/Security/Hash");
 class resendOtpService {
-    UserModel = new DBRepository_1.UserRepo();
+    UserModel = new UserRepository_1.UserRepo();
     resendEmailOtp = async (req, res, next) => {
         const { email } = req.body;
         const user = await this.UserModel.findByEmail({ email });

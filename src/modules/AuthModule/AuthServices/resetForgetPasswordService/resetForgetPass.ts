@@ -6,7 +6,7 @@ import {
   NotVerifiedExceptions,
   OtpExpiredExceptions,
 } from '../../../../utils/errors/ErrorTypes'
-import { UserRepo } from '../../../../DB/repositories/DBRepository'
+import { UserRepo } from '../../../../DB/repositories/UserRepository'
 import { compare, hash } from '../../../../utils/Security/Hash'
 
 export class resetForgetPasswordService {

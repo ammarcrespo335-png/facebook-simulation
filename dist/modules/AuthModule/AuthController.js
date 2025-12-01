@@ -23,28 +23,40 @@ const Images_1 = require("./AuthServices/Upload/Images");
 const SendFriendRequest_1 = require("./AuthServices/SendFriendRequest/SendFriendRequest");
 const ChatController_1 = __importDefault(require("../chatModule/ChatController"));
 const authRouter = (0, express_1.Router)();
+// Chat routes
 authRouter.use('/:id/chat', ChatController_1.default);
+// Services Instances
 const signUpService = new SignUpService_1.SignUpService();
-authRouter.post('/signup', (0, ValidationMiddleware_1.default)(SignUpValidation_1.SignUpSchema), signUpService.signUp.bind(signUpService));
-const ConfirmEmailService = new ConfirmEmail_1.ConfirmEmail();
-authRouter.patch('/confirmEmail', (0, ValidationMiddleware_1.default)(ConfirmEmailValidation_1.ConfirmEmailSchema), ConfirmEmailService.ConfirmEmail.bind(ConfirmEmailService));
+const confirmEmailService = new ConfirmEmail_1.ConfirmEmail();
 const resendEmailOtpService = new resendEmailOtp_1.resendOtpService();
-authRouter.patch('/resendOtp', (0, ValidationMiddleware_1.default)(resendEmailValidation_1.resendEmailOtpSchema), resendEmailOtpService.resendEmailOtp.bind(resendEmailOtpService));
 const login = new loginService_1.loginService();
-authRouter.post('/login', (0, ValidationMiddleware_1.default)(loginSchema_1.loginSchema), login.loginService.bind(login));
 const getUser = new getUserProfile_1.GetUserService();
-authRouter.get('/me', authMiddleware_1.auth, getUser.getUserProfile.bind(getUser));
 const refreshToken = new refreshToken_1.refreshTokenService();
-authRouter.post('/refreshToken', refreshToken.refreshToken.bind(refreshToken));
-const ForgetPassword = new ForgetPassService_1.ForgetPassService();
-authRouter.patch('/forgetPassword', ForgetPassword.ForgetPass.bind(ForgetPassword));
-const Reset_Password = new resetForgetPass_1.resetForgetPasswordService();
-authRouter.patch('/reset_forget_Pass', Reset_Password.resetForgetPassword.bind(Reset_Password));
-const ResendFriendRequest = new SendFriendRequest_1.SendFriendRequest();
-authRouter.patch('/send-friend-request', authMiddleware_1.auth, ResendFriendRequest.FriendRequest.bind(ResendFriendRequest));
-const AcceptFriendRequest = new SendFriendRequest_1.SendFriendRequest();
-authRouter.patch('/accept-friend-request/:id', authMiddleware_1.auth, AcceptFriendRequest.AcceptFriendRequest.bind(AcceptFriendRequest));
+const forgetPassword = new ForgetPassService_1.ForgetPassService();
+const resetPassword = new resetForgetPass_1.resetForgetPasswordService();
+const friendRequestService = new SendFriendRequest_1.SendFriendRequest();
 const imagesController = new Images_1.ImagesController();
-authRouter.patch('/Profile-Image', (0, multer_1.multerFile)({ storeIn: multer_1.StoreInEnum.memory }).single('image'), authMiddleware_1.auth, imagesController.uploadProfileImage);
-authRouter.patch('/cover-Image', (0, multer_1.multerFile)({ storeIn: multer_1.StoreInEnum.memory }).array('images'), authMiddleware_1.auth, imagesController.uploadCoverImage);
+// Signup
+authRouter.post('/signup', (0, ValidationMiddleware_1.default)(SignUpValidation_1.SignUpSchema), signUpService.signUp.bind(signUpService));
+// Confirm Email
+authRouter.patch('/confirm-email', (0, ValidationMiddleware_1.default)(ConfirmEmailValidation_1.ConfirmEmailSchema), confirmEmailService.ConfirmEmail.bind(confirmEmailService));
+// Resend OTP
+authRouter.patch('/resend-otp', (0, ValidationMiddleware_1.default)(resendEmailValidation_1.resendEmailOtpSchema), resendEmailOtpService.resendEmailOtp.bind(resendEmailOtpService));
+// Login
+authRouter.post('/login', (0, ValidationMiddleware_1.default)(loginSchema_1.loginSchema), login.loginService.bind(login));
+// Get profile
+authRouter.get('/me', authMiddleware_1.auth, getUser.getUserProfile.bind(getUser));
+// Refresh token
+authRouter.post('/refresh-token', refreshToken.refreshToken.bind(refreshToken));
+// Forget password
+authRouter.patch('/forget-password', forgetPassword.ForgetPass.bind(forgetPassword));
+// Reset forget password
+authRouter.patch('/reset-password', resetPassword.resetForgetPassword.bind(resetPassword));
+// Friend requests
+authRouter.patch('/send-friend-request', authMiddleware_1.auth, friendRequestService.FriendRequest.bind(friendRequestService));
+authRouter.patch('/accept-friend-request/:id', authMiddleware_1.auth, friendRequestService.AcceptFriendRequest.bind(friendRequestService));
+// Upload profile image
+authRouter.patch('/profile-image', authMiddleware_1.auth, (0, multer_1.multerFile)({ storeIn: multer_1.StoreInEnum.memory }).single('image'), imagesController.uploadProfileImage);
+// Upload cover images
+authRouter.patch('/cover-images', authMiddleware_1.auth, (0, multer_1.multerFile)({ storeIn: multer_1.StoreInEnum.memory }).array('images'), imagesController.uploadCoverImage);
 exports.default = authRouter;

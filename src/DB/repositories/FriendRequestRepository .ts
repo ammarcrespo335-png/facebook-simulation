@@ -1,5 +1,5 @@
 import { Model, ProjectionType, QueryOptions } from 'mongoose'
-import { DBRepo } from './UserRepository'
+import { DBRepo } from './DBRepository'
 
 import {
   FriendRequestModel,

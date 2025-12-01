@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ForgetPassService = void 0;
 const SuccessHandler_1 = require("../../../../utils/SuccessHandler");
-const DBRepository_1 = require("../../../../DB/repositories/DBRepository");
+const UserRepository_1 = require("../../../../DB/repositories/UserRepository");
 const ErrorTypes_1 = require("../../../../utils/errors/ErrorTypes");
 const CreateOtp_1 = require("../../../../utils/Email/CreateOtp");
 const GenerateHtml_1 = require("../../../../utils/Email/GenerateHtml");
 const EmailEvents_1 = require("../../../../utils/Email/EmailEvents");
 const Hash_1 = require("../../../../utils/Security/Hash");
 class ForgetPassService {
-    UserModel = new DBRepository_1.UserRepo();
+    UserModel = new UserRepository_1.UserRepo();
     ForgetPass = async (req, res, next) => {
         const { email } = req.body;
         const user = await this.UserModel.findByEmail({ email });
