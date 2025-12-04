@@ -2,11 +2,14 @@
 🌐 Social Media Backend – Node.js + TypeScript
 
 A clean, modular, and scalable backend that simulates the core features of a modern social media platform.
-Built with Node.js, Express, TypeScript, MongoDB, and Socket.IO, following clean architecture principles designed for real-world backend development.
+Built with Node.js, Express, TypeScript, MongoDB, and Socket.IO, following clean architecture principles suitable for real-world backend development.
+
+
+---
 
 🚀 Overview
 
-This project implements essential social media functionalities, including:
+This backend implements essential social media functionalities:
 
 🔐 Authentication & Authorization (JWT)
 
@@ -22,20 +25,26 @@ This project implements essential social media functionalities, including:
 
 ⚡ Real-Time Private Chat (Socket.IO)
 
-🌍 Modular folder structure built for scalability
+🌍 Modular folder structure for scalability
 
-🧩 Centralized error handler + validation middleware
+🧩 Centralized error handling and validation middleware
+
+
+
+---
 
 🧩 Features
+
 🔐 Authentication
 
 Register new users
 
 Login using JWT
 
-Password hashing using bcrypt
+Password hashing with bcrypt
 
 Protected routes using authentication middleware
+
 
 👤 Users
 
@@ -47,13 +56,10 @@ Search for users
 
 View other user profiles
 
+
 📝 Posts
 
-Create posts
-
-Update your posts
-
-Delete posts
+Create, update, delete posts
 
 Retrieve user posts
 
@@ -61,45 +67,44 @@ Attach and manage comments
 
 Like / Unlike posts
 
+
 💬 Comments
 
-Add a comment to a post
+Add, edit, delete comments
 
-Edit your comment
-
-Delete your comment
 
 👍 Likes
 
-Like a post
-
-Unlike a post
+Like / Unlike posts
 
 Prevent duplicate likes
 
+
 🤝 Friend Requests
 
-Send a friend request
-
-Accept a friend request
-
-Cancel a friend request
+Send / accept / cancel friend requests
 
 Check friendship status
 
+
 ⚡ Real-Time Chat (Socket.IO)
 
-Private messages between two users
+Private messaging
 
-Track online users
+Online user tracking
 
-Send & receive messages instantly
+Instant send/receive messages
 
 Auto disconnection handling
 
 Real-time event logging
 
+
+
+---
+
 🏗️ Project Architecture
+
 src/
  ├── index.ts               # Entry point
  ├── bootstrap.ts           # Express + Socket.IO setup
@@ -123,11 +128,15 @@ src/
       ├── ErrorTypes.ts
       └── helpers.ts
 
-
 ✨ Clean, decoupled, and production-ready architecture.
 
+
+---
+
 🛠 Tech Stack
+
 Layer	Technology
+
 Runtime	Node.js
 Framework	Express.js
 Language	TypeScript
@@ -137,24 +146,34 @@ Authentication	JWT
 Hashing	bcrypt
 Validation	express-validator
 Environment	dotenv
-📦 Installation
+
+
+
+---
+
+📦 Installation & Run
+
 1️⃣ Clone the repository
+
 git clone https://github.com/ammarcrespo335-png/facebook-simulation.git
 
 2️⃣ Install dependencies
+
 npm install
 
 3️⃣ Create your .env file
+
 PORT=5000
 MONGO_URI=your_mongo_uri
 JWT_SECRET=your_secret
 
-4️⃣ Run the project
-npm run dev
+4️⃣ Run the project in development mode
 
-📸 Screenshots
-Dashboard	Chat System
-<img src="https://github.com/user-attachments/assets/eb35d996-cf06-48ef-af79-5ab3255d6d90" width="450"/>	<img src="https://github.com/user-attachments/assets/40430115-3ec6-4386-9c83-483bf3cb1cc7" width="450"/>
+npm run start:dev
+
+
+---
+
 🧱 Future Improvements
 
 🔔 Notifications system
@@ -170,6 +189,10 @@ Dashboard	Chat System
 🧪 Jest test coverage
 
 📁 Better documentation for each module
+
+
+
+---
 
 📜 License
 
